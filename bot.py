@@ -113,11 +113,6 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     if update:
         await update.message.reply_text("Ocorreu um erro. Por favor, tente novamente.")
 
-# Função para manter o bot ativo (ping a cada 25 minutos)
-async def keep_alive(context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Função para manter o bot ativo no Heroku."""
-    logger.info("Bot ainda está ativo!")
-
 def main() -> None:
     """Função principal para iniciar o bot."""
     # Obtém o token do ambiente (para segurança)
@@ -149,10 +144,6 @@ def main() -> None:
     
     application.add_handler(conv_handler)
     application.add_error_handler(error_handler)
-    
-    # Adiciona job para manter o bot ativo (a cada 25 minutos)
-    job_queue = application.job_queue
-    job_queue.run_repeating(keep_alive, interval=1500, first=10)
     
     # Inicia o bot com polling (sem webhook)
     application.run_polling(poll_interval=3.0, timeout=30)
